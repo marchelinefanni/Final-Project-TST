@@ -7,11 +7,13 @@ Final Project (Phase 1): Microservice Deployment of Fashion Upcycling Service
 <br>
 ## Spesifikasi Layanan
 Layanan ini dibangun menggunakan teknologi berikut ini:
+```
 1. FastAPI 0.104.1
 2. Pydantic 2.4.2
 3. Uvicorn 0.24.0
-<br>
+```
 Layanan ini memiliki total `10 API Endpoints` sebagai berikut:
+```
 1. Welcome 
 2. Create Order
 3. Read All Order
@@ -21,20 +23,27 @@ Layanan ini memiliki total `10 API Endpoints` sebagai berikut:
 7. Update Order
 8. Delete Order
 9. Product Recommendation
-10. Quantity Calculator    
+10. Quantity Calculator
+```   
 ## Cara Menjalankan Layanan
 Menjalankan secara lokal dengan uvicorn
+```
 1. Jalankan terminal
 2. Lakukan instalasi Fast API dengan pip install fastapi
 3. Lakukan instalasi pydantic dengan pip install pydantic
 4. Lakukan instalasi uvicorn dengan pip install uvicorn
 5. Jalankan program dengan uvicorn main:app --reload
+```
 Menjalankan secara lokal menggunakan docker
+```
 1. Unduh dan lakukan pengaturan docker pada perangkat
 2. Jalankan command berikut ini pada terminal:
    docker build -t <image_name> .
    docker run -d --name <container_name> -p 80:80 <image_name>
+```
 Menjalankan melalui layanan azure
+```
 1. Buka link berikut ini: http://fashup2.ayfeg8ebcpc3gfbn.southeastasia.azurecontainer.io/docs
 2. Mencoba setiap API endpoint yang tersedia dengan menekan opsi try it out dan memasukkan input jika diperlukan
+```
 
