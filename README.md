@@ -10,6 +10,7 @@ Layanan ini dibangun menggunakan teknologi berikut ini:
 1. FastAPI 0.104.1
 2. Pydantic 2.4.2
 3. Uvicorn 0.24.0
+<br>
 Layanan ini memiliki total `10 API Endpoints` sebagai berikut:
 1. Welcome 
 2. Create Order
