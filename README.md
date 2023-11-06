@@ -7,9 +7,9 @@ Final Project (Phase 1): Microservice Deployment of Fashion Upcycling Service
 <br>
 ## Spesifikasi Layanan
 Layanan ini dibangun menggunakan teknologi berikut ini:
-* FastAPI 0.104.1
-* Pydantic 2.4.2
-* Uvicorn 0.24.0
+1. FastAPI 0.104.1
+2. Pydantic 2.4.2
+3. Uvicorn 0.24.0
 <br>
 Layanan ini memiliki total `10 API Endpoints` sebagai berikut:
 1. Welcome 
