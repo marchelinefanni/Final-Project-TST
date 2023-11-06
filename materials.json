@@ -1,0 +1,36 @@
+{
+    "materials": [
+        {
+            "material_id": 1,
+            "material_name": "Denim"
+        },
+        {
+            "material_id": 2,
+            "material_name": "Cotton"
+        },
+        {
+            "material_id": 3,
+            "material_name": "Wool"
+        },
+        {
+            "material_id": 4,
+            "material_name": "Leather"
+        },
+        {
+            "material_id": 5,
+            "material_name": "Silk"
+        },
+        {
+            "material_id": 6,
+            "material_name": "Linen"
+        },
+        {
+            "material_id": 7,
+            "material_name": "Polyester"
+        },
+        {
+            "material_id": 8,
+            "material_name": "Flannel"
+        }
+    ]
+}

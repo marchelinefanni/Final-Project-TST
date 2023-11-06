@@ -1,0 +1,39 @@
+{
+    "catalogue": [
+        {
+            "product_id": 1,
+            "product_name": "Headband",
+            "complexity": 1
+        },
+        {
+            "product_id": 2,
+            "product_name": "Scarf",
+            "complexity": 1
+        },
+        {
+            "product_id": 3,
+            "product_name": "Tote bag",
+            "complexity": 1
+        },
+        {
+            "product_id": 4,
+            "product_name": "Wallet",
+            "complexity": 2
+        },
+        {
+            "product_id": 5,
+            "product_name": "Blanket",
+            "complexity": 2
+        },
+        {
+            "product_id": 6,
+            "product_name": "Dress",
+            "complexity": 3
+        },
+        {
+            "product_id": 7,
+            "product_name": "Jacket",
+            "complexity": 3
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "orders": [
+        {
+            "order_id": 1,
+            "material": "Wool",
+            "weight": 500,
+            "expected_product": "Jacket",
+            "product_quantity": 1
+        },
+        {
+            "order_id": 2,
+            "material": "Cotton",
+            "weight": 142,
+            "expected_product": "Headband",
+            "product_quantity": 5
+        },
+        {
+            "order_id": 3,
+            "material": "Wool",
+            "weight": 500,
+            "expected_product": "Jacket",
+            "product_quantity": 1
+        }
+    ]
+}
