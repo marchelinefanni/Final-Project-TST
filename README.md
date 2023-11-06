@@ -32,7 +32,7 @@ Menjalankan secara lokal menggunakan docker
 1. Unduh dan lakukan pengaturan docker pada perangkat
 2. Jalankan command berikut ini pada terminal:
    docker build -t <image_name> .
-   docker run -d --name <container_naem> -p 80:80 <image_name>
+   docker run -d --name <container_name> -p 80:80 <image_name>
 Menjalankan melalui layanan azure
 1. Buka link berikut ini: http://fashup2.ayfeg8ebcpc3gfbn.southeastasia.azurecontainer.io/docs
 2. Mencoba setiap API endpoint yang tersedia dengan menekan opsi try it out dan memasukkan input jika diperlukan
