@@ -1,0 +1,23 @@
+{
+    "fanni": {
+        "username": "fanni",
+        "full_name": "Marcheline Fanni",
+        "email": "fanni@gmail.com",
+        "hashed_password": "$2b$12$drFn1vgsQLTS8PgwCHWWfuaDCIpO4pZO3.x431S/BX1Ja0EqekJ7y",
+        "disabled": false
+    },
+    "fevina": {
+        "username": "fevina",
+        "full_name": "Fevina Hidayat",
+        "email": "fevina@gmail.com",
+        "hashed_password": "$2b$12$lzxafUjfX4QPOYQU5sRYtOhSO9A2FBkvJADMyhEQJcspBLLpNgNHi",
+        "disabled": false
+    },
+    "filanova": {
+        "username": "filanova",
+        "full_name": "Maryline Filanova",
+        "email": "filanova@gmail.com",
+        "hashed_password": "$2b$12$ACjxOugrlK1xnBr490tQNOYK.y2C1fcaK/W3LVzKhnPAPhr9WK15m",
+        "disabled": false
+    }
+}

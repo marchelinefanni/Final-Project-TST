@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException 
 from pydantic import BaseModel
 import json
+from auth import *
 
 class Order(BaseModel):
     order_id: int
@@ -38,9 +39,55 @@ app = FastAPI()
 async def welcome():
     return {"message": "Welcome to FashUp! Add /docs to the URL to use the service!"}
 
+'''
+# REGISTER
+@app.post('/register')
+async def register(user: User, password: str):
+    user_dict = user.dict()
+    user_found = False 
+    for u in users:
+        if user.username == u:
+            user_found = True 
+            return "Username " + str(user.username) + " exists."
+    if not user_found:
+        new_user = UserData()
+        new_user.username = user.username
+        new_user.full_name = user.full_name
+        new_user.email = user.email
+        new_user.hashed_password = get_password_hash(password)
+        new_user.disabled = False
+        new_user_data = vars(new_user)
+        users[user.username] = new_user_data
+        with open("users.json","w") as write_file9:
+            json.dump(users, write_file9, indent=2)
+        return new_user_data 
+    raise HTTPException(
+        status_code=404, detail=f'USER NOT FOUND'
+    )
+'''
+
+# USER AUTHENTICATION
+@app.post("/token", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(users, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password", headers={"WWW-Authenticate": "Bearer"})
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/users/me/", response_model=User)
+async def read_current_user_info(current_user: User = Depends(get_current_active_user)):
+    return current_user
+
+@app.get("/users/me/items")
+async def read_current_user_items(current_user: User = Depends(get_current_active_user)):
+    return [{"item_id": 1, "owner": current_user}]
+
+
 # CREATE / POST
 @app.post('/orders')
-async def create_order(order: Order):
+async def create_order(order: Order, current_user: User = Depends(get_current_active_user)):
     order_dict = order.dict()
     validate_order(order_dict)
     order_found = False 
@@ -60,11 +107,11 @@ async def create_order(order: Order):
 
 # READ / GET
 @app.get('/orders')
-async def read_all_orders():
+async def read_all_orders(current_user: User = Depends(get_current_active_user)):
     return orders['orders']
 
 @app.get('/orders/{order_id}')
-async def read_order(order_id: int):
+async def read_order(order_id: int, current_user: User = Depends(get_current_active_user)):
     for order in orders['orders']:
         print(order)
         if order['order_id'] == order_id:
@@ -74,17 +121,17 @@ async def read_order(order_id: int):
     )
 
 @app.get('/materials')
-async def read_all_materials():
+async def read_all_materials(current_user: User = Depends(get_current_active_user)):
     return materials['materials']
 
 @app.get('/catalogue')
-async def read_all_catalogue():
+async def read_all_catalogue(current_user: User = Depends(get_current_active_user)):
     return catalogue['catalogue']
 
 
 # UPDATE / PUT
 @app.put('/orders')
-async def update_order(order: Order):
+async def update_order(order: Order, current_user: User = Depends(get_current_active_user)):
     order_dict = order.dict()
     validate_order(order_dict)
     order_found = False
@@ -104,7 +151,7 @@ async def update_order(order: Order):
 
 # DELETE
 @app.delete('/orders/{order_id}')
-async def delete_order(order_id: int):
+async def delete_order(order_id: int, current_user: User = Depends(get_current_active_user)):
     order_found = False 
     for id_order, order in enumerate(orders['orders']):
         if order['order_id'] == order_id:
@@ -123,7 +170,7 @@ async def delete_order(order_id: int):
 # CORE FUNCTIONS
 # Product Recommendation Based on Material
 @app.get('/recommendation')
-async def product_recommendation(material_input: str):
+async def product_recommendation(material_input: str, current_user: User = Depends(get_current_active_user)):
     validate_materials(material_input)
     recommend = "Here's your product recommendation(s): "
     if material_input == "Denim":
@@ -147,7 +194,7 @@ async def product_recommendation(material_input: str):
 
 # Quantity Calculator Based on Material and Weight
 @app.get('/quantity')
-async def quantity_calculator(material_input: str, weight_input: int):
+async def quantity_calculator(material_input: str, weight_input: int, current_user: User = Depends(get_current_active_user)):
     validate_materials(material_input)
     validate_integer(weight_input, "WEIGHT")
 
