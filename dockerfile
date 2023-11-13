@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the Python dependencies
-RUN pip install -r requirements.txt
+RUN pip install fastapi uvicorn pydantic python-multipart python-jose passlib
 
 # Copy the application code to the working directory
 COPY . .
