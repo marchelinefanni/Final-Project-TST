@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     
         try {
-        const response = await fetch("https://backend-tst-production.up.railway.app/token", {
+        const response = await fetch("https://fashup.up.railway.app/token", {
             method: "POST",
             headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         if (response.ok) {
             showNotificationOk("Welcome to design service")
-            window.location.href = "https://backend-tst-production.up.railway.app/docs";
+            window.location.href = "https://fashup.up.railway.app/docs";
             document.getElementById("username-login").value = "";
             document.getElementById("password-login").value = "";
             loginloading.style.backgroundColor = '';
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append("username", username);
         formData.append("password", password);
         try {
-            const response = await fetch("https://backend-tst-production.up.railway.app/users", {
+            const response = await fetch("https://fashup.up.railway.app/users", {
                 method: "POST",
                 headers: {
                     // Change Content-Type to "application/x-www-form-urlencoded"
