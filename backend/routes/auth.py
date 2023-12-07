@@ -1,9 +1,9 @@
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from models.auth import *
 import json
 
 
@@ -11,38 +11,16 @@ SECRET_KEY = "9ada8cc76f42770d493eea65201cd3d07cf88215328ea6c59bb417739360815c"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-with open("users.json", "r") as json_file:
+with open("data/users.json", "r") as json_file:
     users = json.load(json_file)
 
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    username: str or None = None 
-
-class User(BaseModel):
-    username: str
-    email: str or None = None
-    full_name: str or None = None
-    disabled: bool or None = None
-
-class UserData(BaseModel):
-    username: str 
-    full_name: str or None = None
-    email: str or None = None
-    hashed_password: str
-    disabled: bool or None = None
-
-class UserInDB(User):
-    hashed_password: str
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 
-app = FastAPI()
+auth_router = APIRouter(tags=['Authentication'])
 
+# AUTHENTICATION FUNCTIONS
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -99,5 +77,48 @@ async def get_current_active_user(curret_user: UserInDB = Depends(get_current_us
         raise HTTPException(status_code=400, detail="Inactive User")
     return curret_user
 
-# pwd = get_password_hash("16521117")
-# print(pwd)
+
+# AUTHENTICATION API
+@auth_router.post("/token", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(users, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password", headers={"WWW-Authenticate": "Bearer"})
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
+    return {"access_token": access_token, "token_type": "bearer"}
+
+'''
+# REGISTER
+@app.post('/register')
+async def register(user: User, password: str):
+    user_dict = user.dict()
+    user_found = False 
+    for u in users:
+        if user.username == u:
+            user_found = True 
+            return "Username " + str(user.username) + " exists."
+    if not user_found:
+        new_user = UserData()
+        new_user.username = user.username
+        new_user.full_name = user.full_name
+        new_user.email = user.email
+        new_user.hashed_password = get_password_hash(password)
+        new_user.disabled = False
+        new_user_data = vars(new_user)
+        users[user.username] = new_user_data
+        with open("users.json","w") as write_file9:
+            json.dump(users, write_file9, indent=2)
+        return new_user_data 
+    raise HTTPException(
+        status_code=404, detail=f'USER NOT FOUND'
+    )
+'''
+
+@auth_router.get("/users/me/", response_model=User)
+async def read_current_user_info(current_user: User = Depends(get_current_active_user)):
+    return current_user
+
+@auth_router.get("/users/me/items")
+async def read_current_user_items(current_user: User = Depends(get_current_active_user)):
+    return [{"item_id": 1, "owner": current_user}]
