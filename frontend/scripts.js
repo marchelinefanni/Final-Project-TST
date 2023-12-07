@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const signInForm = document.querySelector(".sign-in-form");
     const signUpForm = document.querySelector(".sign-up-form");
     const notificationElement = document.getElementById('notification');
+    const loginloading = document.getElementById('login-btn');
+    const signuploading = document.getElementById('signup-btn');
+
+    loginloading.addEventListener('click', function() {
+        this.style.backgroundColor = 'white';
+        this.style.color = 'black';
+        this.value = 'Loading...';
+    });
+
+    signuploading.addEventListener('click', function() {
+        this.style.backgroundColor = 'white';
+        this.style.color = 'black';
+        this.value = 'Loading...';
+    });
 
     sign_up_btn.addEventListener("click", () => {
     container.classList.add("sign-up-mode");
@@ -31,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         notificationElement.style.borderColor = '#c3e6cb';
         notificationElement.style.color = '#155724';
         notificationElement.style.display = 'block';
-
+        
         setTimeout(function () {
             notificationElement.style.display = 'none';
         }, 2000);
@@ -48,28 +62,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     
         try {
-        const response = await fetch("https://desain-psikologi-fastapi.whitecliff-184c41f4.southeastasia.azurecontainerapps.io/token", {
+        const response = await fetch("https://backend-tst-production.up.railway.app/token", {
             method: "POST",
             headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             },
             body: `username=${username}&password=${password}`,
         });
-    
         if (response.ok) {
             showNotificationOk("Welcome to design service")
-            window.location.href = "https://desain-psikologi-fastapi.whitecliff-184c41f4.southeastasia.azurecontainerapps.io/docs";
+            window.location.href = "https://backend-tst-production.up.railway.app/docs";
             document.getElementById("username-login").value = "";
-                document.getElementById("password-login").value = "";
+            document.getElementById("password-login").value = "";
+            loginloading.style.backgroundColor = '';
+            loginloading.style.color = '';
+            loginloading.value = 'Login';
         } else {
             const errorData = await response.json();
             showNotification("Invalid username or password");
+            loginloading.style.backgroundColor = '';
+            loginloading.style.color = '';
+            loginloading.value = 'Login';
         }
         } catch (error) {
         console.error("Error during login:", error.message);
+        loginloading.style.backgroundColor = '';
+        loginloading.style.color = '';
+        loginloading.value = 'Login';
         }
     });
-```
+
     signUpForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const username = document.getElementById("username-signup").value;
@@ -85,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append("username", username);
         formData.append("password", password);
         try {
-            const response = await fetch("https://desain-psikologi-fastapi.whitecliff-184c41f4.southeastasia.azurecontainerapps.io/users", {
+            const response = await fetch("https://backend-tst-production.up.railway.app/users", {
                 method: "POST",
                 headers: {
                     // Change Content-Type to "application/x-www-form-urlencoded"
@@ -93,16 +115,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: new URLSearchParams(formData),
             });
-
             if (response.ok) {
                 // User registered successfully, show success message
                 showNotificationOk("User registered successfully.");
-
                 // Redirect to sign-in page
                 container.classList.remove("sign-up-mode");
 
+                document.getElementById('signup-btn').style.backgroundColor = '';
+                document.getElementById('signup-btn').style.color = '';
+                document.getElementById('signup-btn').value = 'Sign up';
+                
                 // Clear input fields
                 document.getElementById("username-signup").value = "";
+                document.getElementById("email-signup").value = "";
                 document.getElementById("password-signup").value = "";
             } else {
                 // Registration failed, show error message
@@ -112,5 +137,4 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Error during registration:", error.message);
         }
     });
-```
 });
